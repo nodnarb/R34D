@@ -27,7 +27,8 @@
 {
     [super viewDidLoad];
     timerState = TimerStateStopped;
-    // Do any additional setup after loading the view from its nib.
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopTimer) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,12 +79,16 @@
                                                              userInfo:nil
                                                               repeats:YES];
     } else {
-        timerState = TimerStateStopped;
-        [timerToggle setTitle:@"Start" forState:UIControlStateNormal];
-        [self.stopWatchTimer invalidate];
-        self.stopWatchTimer = nil;
-        [self updateTimer];
+        [self stopTimer];
     }
+}
+
+-(void)stopTimer {
+    timerState = TimerStateStopped;
+    [timerToggle setTitle:@"Start" forState:UIControlStateNormal];
+    [self.stopWatchTimer invalidate];
+    self.stopWatchTimer = nil;
+    [self updateTimer];
 }
 
 @end
